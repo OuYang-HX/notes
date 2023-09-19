@@ -15,6 +15,21 @@
 ## 常见的Java语法糖
 ### Lambda表达式
 
+Lambda表达式
+一、Lambda表达式简介
+1.1什么是Lamdba表达式?
+ Lambda表达式是Java 8 添加的一个新特性，可以认为，Lambda是一个匿名函数（相似于匿名内部类）,作用是返回一个实现了接口的对象（这个观点非常重要，贯穿于Lambda表达式的整个使用过程）。
+
+1.2为什么使用Lambada表达式？
+ 使用Lambda表达式对比于其他接口实现方式显得非常简洁。（详见3种接口实现的方法代码块CodeBlock-1）
+
+1.3Lambda对接口的要求？
+ 虽然Lambda表达式对某些接口进行简单的实现，但是并不是所有的接口都可以使用Lambda表达式来实现，要求接口种定义的必须要实现的抽象方法只能是一个（注意：具体方法可以多个或者没有）。
+
+在Java 8 中对接口增加了新特性：default，提供了一个默认的抽象方法，但是Lambda对此没有特殊的影响，方法可以按Lambda所表达的来。
+Java Lambda 表达式 Java Lambda表达式的一个重要用法是简化某些匿名内部类（Anonymous Classes）的写法。
+
+
 在了解Lambda之前，先回顾一下Java的方法。
 Java的方法分为实例方法，例如Integer定义的`equals()`方法:
 <details>
@@ -48,6 +63,9 @@ Java的方法分为实例方法，例如Integer定义的`equals()`方法:
 **Lambda表达式**
 Lambda表达式，是Java8的一个新特性，也是Java8中最值得学习的新特性之一。
 在Java程序中，我们经常遇到一大堆单方法接口，即一个接口只定义了一个方法：
+Lambda 允许把函数作为一个方法的参数（函数作为参数传递进方法中）。
+
+使用 Lambda 表达式可以使代码变的更加简洁紧凑。
 - Comparator
 - Runnable
 - Callable
@@ -86,5 +104,89 @@ x -> 2 * x
 ### try-with-resource语法
 ### 包装类自动装箱与拆箱
 ### 内部类
+*References:*
+1. https://www.cainiaojc.com/note/qad6mz.html
+2. https://developer.aliyun.com/article/726774
+3. https://www.joshua317.com/article/212
+4. https://segmentfault.com/a/1190000023832584
+5. https://blog.csdn.net/liuxiao723846/article/details/108006609
+6. https://www.cnblogs.com/shenjianeng/p/6409311.html
+7. https://blog.csdn.net/xiaojin21cen/article/details/104532199
+
+**定义：** 定义在类内部的类,称之为内部类。
+#### 内部类作用：
+1. 增强封装,把内部类隐藏在外部类中,不允许其他类来访问内部类
+2. 内部类能提高代码的可读性和可维护性
+
+#### 内部类的分类
+对于内部类的分类,可以对比于成员变量的分类.
+
+我们可以根据不同的修饰符或者定义的不同位置把成员变量,可以细分为:类成员变量,实例成员变量,局部变量.
+
+内部类看做是外部类的一个成员,那么内部类可以使用public/缺省/protected/private修饰.还可以是static修饰.
+
+同理,内部类也根据使用不同的修饰符或者定义的不同位置,将其分成4类:
+1. 实例内部类:内部类没有使用static修饰
+
+2. 静态内部类:内部类使用static修饰
+
+3. 局部内部类:在方法中定义的内部类
+
+4. 匿名内部类:只能使用一次,属于内部类的一种特殊情况
+
+##### 实例内部类
+**1. 定义：** 实例内部类,即没有使用static修饰的内部类.这说明,实例内部类属于外部类的对象,不属于外部类本身(类比字段)。
+**2. 创建实例内部类**
+<details>
+<summary>Example</summary>
+
+```java
+//外部类
+class Outter {
+ // 实例内部类:没有使用static修饰
+ class Inner {
+ }
+}
+public class InnerDemo1 {
+ public static void main(String[] args) {
+ // 创建实例内部类,没有使用static修饰,属于外部类的对象,因此,创建实例内部类前,必须存在外部类对象
+ Outter out = new Outter();
+ // 通过外部类对象创建内部类对象
+ Outter.Inner in = out.new Inner();
+ }
+}
+```
+</details>
+
+**3. 特点：**
+- 由创建实例内部类的过程可知,当存在内部类对象时,一定存在外部类对象.
+- 实例内部类的实例自动持有外部类的实例的引用,实例内部类可以无条件访问外部类的所有字段和方法
+注意:当成员内部类拥有和外部类同名的成员变量或者方法时，会发生隐藏现象
+- 外部类中不能直接访问内部类的成员,必须先创建一个成员内部类的对象，再通过指向这个对象的引用来访问
+<details>
+<summary>Example</summary>
+
+```java
+//外部类
+class Outter {
+ private String name = "out";
+ private Integer age = 17;
+ // 实例内部类:没有使用static修饰
+ class Inner {
+ private Integer age = 18; // 隐藏现象,隐藏了外部类的age
+ Inner() {
+  // 特点:1.实例内部类能直接访问外部类成员
+  // 2.当实例内部类和外部类有同名的字段或者方法时，会发生隐藏现象
+  System.out.println(name + this.age);// 输出out18
+  // 此时若需要使用外部类的age,语法:外部类.this.age
+  System.out.println(Outter.this.age);// 输出17
+ }
+ }
+}
+```
+</details>
+
+匿名内部类适合只使用一次的类，当创建一个匿名内部类时，会立即创建该类的一个实例对象，匿名类因为没有类名，所以不能重复使用。
+匿名内部类可以看成局部内部类的特例。（匿名的含义是由编译器自动给内部类起一个内部名称）匿名类也存在被Lamda表达式替代的风险，遗留代码还可以看到匿名类的写法，新写代码如无特殊情况，尽量使用Lamda表达式。
 ### 增强for循环
 ### 变长参数
