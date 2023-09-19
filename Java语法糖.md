@@ -93,7 +93,7 @@ Arrays.sort(array, new Comparator<String>() {
 x -> 2 * x  
   
 // 3. 接受2个参数(数字),并返回他们的差值  
-(x, y) -> x – y  
+(x, y) -> x - y  
   
 // 4. 接收2个int型整数,返回他们的和  
 (int x, int y) -> x + y  
