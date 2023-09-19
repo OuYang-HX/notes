@@ -1,0 +1,1 @@
+在powershell的配置json中，Git Bash的guid为{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}
